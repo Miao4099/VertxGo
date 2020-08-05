@@ -1,0 +1,137 @@
+package com.runyu.app
+
+import com.runyu.sql.SqlBuilder
+import com.runyu.sql.*
+import com.runyu.std.*
+import io.vertx.core.json.JsonArray
+import io.vertx.core.json.JsonObject
+import io.vertx.reactivex.core.eventbus.Message
+import com.runyu.app.`val`.*
+
+
+var sqlComplain= SqlBuilder("sys_complains",mapOf(
+        Pair("id","complain_id"),
+        Pair("urgency","complain_urgency"),
+        Pair("brief","complain_brief"),
+        Pair("date","complain_date"),
+        Pair("state","complain_state"),
+        Pair("content","complain_content"),
+        Pair("machine","complain_machine"),
+        Pair("remark","complain_remark"),
+        Pair("rank","complain_rank"),
+        Pair("who","complain_from"),
+        Pair("created_at","created_time")
+
+)
+)
+
+
+fun AppMySql.msgComplainAdd(key: String, msg: JsonObject, message: Message<JsonObject>): Msg {
+    return tryDo(message) {
+        var id= IDGen.strId()
+        var sql = sqlComplain.sql()
+                .set("complain_id", id)
+                .set("created_time", now())
+                .set("updated_time", now())
+                .set<Int>("complain_state", msg,ValCommentState())
+                .set("complain_rank",0)
+                .set<Int>("complain_urgency",msg,ValUrgency())
+                .set<String>("complain_from",msg,ValFrom())
+                .set<String>("complain_date",msg,ValDateTime())
+                .set<String>("complain_content",msg,ValBase64())
+                .set<String>("complain_brief",msg,ValBrief())
+                .set<String>("complain_remark",msg,ValMemo())
+                .set<String>("complain_machine",msg,ValMachineNumber())
+                .getInsert()
+
+        transaction(sql.toArray(), message,{msg->
+            msg.add("complain_id",id)
+
+        })
+    }
+}
+
+
+fun AppMySql.msgComplainUpdate(key: String, msg: JsonObject, message: Message<JsonObject>):Msg {
+    return tryDo(message) {
+        var sql = sqlComplain.sql()
+                .set("complain_date",msg.jsonGet<String>("date"),ValDateTime())
+                .set<Int>("complain_urgency",msg,ValUrgency())
+                .set<Int>("complain_state",msg,ValComplainState() )
+                .set<String>("complain_brief",msg,ValBrief())
+               // .set<String>("complain_image",msg,ValFileName())
+                .set<String>("complain_from",msg,ValFrom())
+                .set<String>("complain_content",msg,ValBase64())
+                .set<String>("complain_date",msg,ValDateTime())
+                .set<String>("complain_remark",msg,ValMemo())
+                .set<String>("complain_machine",msg,ValMachineNumber())
+                .getUpdate("where complain_id='${msg.jsonGet<String>("id")}'")
+
+        transaction(sql.toArray(), message)
+    }
+}
+
+
+
+
+fun AppMySql.msgComplainDel(key: String, msg: JsonObject, message: Message<JsonObject>):Msg{
+    return tryDo(message) {
+        //删除时都是多个id一起上传
+        var sql=sqlComplain.sql()
+                .getDelete("complain_id",msg.jsonGet<JsonArray>("ids")!!)
+
+        transaction(sql, message)
+    }
+}
+
+
+
+fun AppMySql.msgComplainGet(key: String, msg: JsonObject, message: Message<JsonObject>):Msg{
+    return tryDo(message) {
+        //可以写在下面set位置，也可以写在这里
+        ValId().validate(msg.jsonGet<String>("id"))
+
+        var sql = sqlComplain.sql()
+                .set("complain_id")
+                .set("created_time")
+                .set("updated_time")
+                .set("complain_state")
+                .set("complain_from")
+                .set("complain_rank")
+                .set("complain_urgency")
+                .set("complain_date")
+                .set("complain_content")
+                .set("complain_brief")
+                .set("complain_machine")
+                .set("complain_remark")
+                .getList("where complain_id='${msg.jsonGet<String>("id")}'")
+
+        getQuery(sql,message)
+
+    }
+}
+
+
+fun AppMySql.msgComplainList(key: String, msg: JsonObject, message: Message<JsonObject>): Msg {
+    return tryDo(message) {
+        var pi=msg.pageInfo()
+
+        var qs=sqlComplain.qs(msg,QuerySorter.Rule("complain_date","desc"))
+        var sql = sqlComplain.sql()
+                .set("complain_id")
+                .set("created_time")
+                .set("updated_time")
+                .set("complain_state")
+                .set("complain_from")
+                .set("complain_rank")
+                .set("complain_urgency")
+                .set("complain_date")
+                .set("complain_content")
+                .set("complain_brief")
+                .set("complain_machine")
+                .set("complain_remark")
+                .getList(sqlComplain.fs(msg), qs, pi)
+        listQuery(sql, message)
+    }
+}
+
