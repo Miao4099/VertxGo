@@ -1,0 +1,89 @@
+{
+  "host": "127.0.0.1",
+  "group_name": "com.runyu.blog",
+  "cfg_log": "config/log/log4j2.xml",
+  "user_token_timeout": 43200,
+
+  "redis": {
+    "host": "localhost",
+    "database": 0,
+    "password": "cc9ccb65b532aa9cbbe19dbaec08b46d",
+    "key_timeout":43200
+  },
+
+  "worker_sql": {
+    "work_id": "sql",
+    "max_pool_size": 30,
+    "user":"root",
+    "password": "password",
+    "url":"jdbc:mysql://127.0.0.1:3306/blog_pro?serverTimezone=GMT%2B8&characterEncoding=utf8"
+  },
+  
+  
+  "worker_agent": {
+    "work_id": "agent",
+    "ssl_on":true,
+    "jks": "config/api.askxyz.top.jks",
+    "jks_password": "1161",
+    "port":443,
+    "wx_app": {
+      "app_key":"wxebef4e06df58476a",
+      "secret":"78d9d40297f6hgjdf143e064ed76dd2"
+    },
+    "dispatch_workers": [],
+    "menu": [
+      {
+        "path": "/user",
+        "redirect": "/user/list",
+        "children": [
+          {
+            "path": "list",
+            "name": "users",
+            "meta": {
+              "title": "用户管理",
+              "icon": "user",
+              "roles": [
+                "admin"
+              ]
+            },
+            "component": "/user/list"
+          }
+        ],
+        "name": "user",
+        "meta": {
+          "roles": [
+            "admin"
+          ]
+        },
+        "component": "Layout"
+      },
+      {
+        "path": "/config",
+        "redirect": "/config/list",
+        "children": [
+          {
+            "path": "list",
+            "name": "config_list",
+            "meta": {
+              "title": "系統設置",
+              "icon": "tab"
+            },
+            "component": "/config/index"
+          }
+        ],
+        "name": "config",
+        "meta": {
+          "title": "系統設置",
+          "icon": "message"
+        },
+        "component": "Layout"
+      },
+      {
+        "path": "*",
+        "redirect": "/404",
+        "hidden": true,
+        "component": "Layout"
+      }
+    ]
+  }
+}
