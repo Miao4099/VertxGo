@@ -132,10 +132,10 @@ a)判断非空和字段只有是product和raw其中一个才满足要求
 b)return返回的是合法的数据  
 c)可在return时返回处理过的数据，如将原始的整型数据改为字符串类型  
 
-### 其它扩展功能地址[others.md](https://github.com/Miao4099/VertxApp/blob/master/others.md "others.md")
+### 其它扩展功能地址[others.md](https://github.com/Miao4099/VertxGo/blob/master/others.md "others.md")
 
 ## 代码的模板   
-### 模板一 [sample_01](https://github.com/Miao4099/VertxApp/blob/master/sample_01 "sample_01")  
+### 模板一 [sample_01](https://github.com/Miao4099/VertxGo/blob/master/sample_01 "sample_01")  
 代码中完成了get/list/add/del/update 5种标准方法  
 
 ## 引用声明
