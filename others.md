@@ -104,9 +104,12 @@ Shop是对Vertx中Verticle的封装，可以让其使用标准的json配置。�
                 
                 
 ## 8.怎样使用RestfulXXX并管理访问权限
-数据中users (名字是固定的)表中的role字段定义了用户分组，前端用户的菜单、和各个接口都可以根据role来调整访问权限。使用RestfulPost、RestfulAny传入接口要求的role，RestfulPost、RestfulAny会判断比较用户的权限和这个传入的role，如果符合要求才会将请求发给模块，否则直接返回权限不足的消息。用户需要在派生HttpAgent时，重载    override fun addHandler(router: Router) {} 添加你本人需要添加的http request router，一个请求对应一个路径。如：  
+数据中users (名字是固定的)表中的role字段定义了用户分组，前端用户的菜单、和各个接口都可以根据role来调整访问权限。使用RestfulPost、RestfulAny传入接口要求的role，RestfulPost、RestfulAny会判断比较用户的权限和这个传入的role，如果符合要求才会将请求发给模块，否则直接返回权限不足的消息。用户需要在派生HttpAgent时，重载    override fun addHandler(router: Router) {} 添加你本人需要添加的http request router，一个请求对应一个路径。RestfaulXXX会将post请求的参数自动打包为json，并自动根据路径名生成消息名，如：  
+        http://api.xxx.com/vip/update_product ===> MSG_VIP_UPDATE_PRODUCT  
+        
+另外，定义权限的方式如下：  
+        
             //定义编辑者权限:用户的role是admin或者editor就满足   
-            
             var editorAccess=setOf("admin","editor")
             
             
