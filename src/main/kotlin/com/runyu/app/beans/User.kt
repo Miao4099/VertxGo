@@ -1,0 +1,36 @@
+package com.runyu.app.beans
+
+data class User(
+        val account: String,
+        val age: Any,
+        val belt_no: String,
+        val birthday: String,
+        val contact1: String,
+        val contact2: Any,
+        val contact3: Any,
+        val contact_tel1: String,
+        val contact_tel2: Any,
+        val contact_tel3: Any,
+        val create_time: String,
+        val districts: String,
+        val group_id: String,
+        val home_address: String,
+        val identity: String,
+        val is_del: Boolean,
+        val memo: Any,
+        val nation: String,
+        val openid: Any,
+        val password: Any,
+        val relation1: Any,
+        val relation2: Any,
+        val relation3: Any,
+        val role: Any,
+        val sex: Int,
+        val status: Int,
+        val student_id: String,
+        val update_time: String,
+        val user_id: String,
+        val user_name: String,
+        val user_type: Int
+
+)

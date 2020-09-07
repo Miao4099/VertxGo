@@ -1,0 +1,135 @@
+{
+  "host": "127.0.0.1",
+  "group_name": "com.vgo.blog",
+  "cfg_log": "config/log/log4j2.xml",
+  "user_token_timeout": 43200,
+  "redis": {
+    "host": "localhost",
+    "database": 0,
+    "password": "cc9ccb65b532aa9cbbe19dbaec08b46d",
+    "key_timeout": 43200
+  },
+  "cache": {
+    "host": "localhost",
+    "database": 1,
+    "password": "cc9ccb65b532aa9cbbe19dbaec08b46d",
+    "key_timeout": 0
+  },
+  "worker_sql": {
+    "work_id": "sql",
+    "max_pool_size": 30,
+    "user": "root",
+    "password": "123456",
+    "url": "jdbc:mysql://127.0.0.1:3306/blog_pro?serverTimezone=GMT%2B8&characterEncoding=utf8"
+  },
+  "worker_mysql": {
+    "work_id": "mysql",
+    "max_pool_size": 1,
+    "user": "root",
+    "password": "123456",
+    "url": "jdbc:mysql://127.0.0.1:3306/blog_pro?serverTimezone=GMT%2B8&characterEncoding=utf8"
+  },
+  "worker_agent": {
+    "work_id": "agent",
+    "ssl_on": true,
+    "jks": "config/api.askxyz.top.jks",
+    "jks_password": "1161",
+    "port": 81,
+    "wx_app": {
+      "app_key":"wx2de316d950a49f42",
+      "secret":"c6783fc448936f97b2c1a99bbb41c884"
+    },
+    "dispatch_workers": [],
+    "menu": [
+      {
+        "path": "/user",
+        "redirect": "/user/list",
+        "children": [
+          {
+            "path": "list",
+            "name": "users",
+            "meta": {
+              "title": "用户管理",
+              "icon": "user",
+              "roles": [
+                "admin"
+              ]
+            },
+            "component": "/user/list"
+          },
+          {
+            "path": "user_rank",
+            "name": "user_rank",
+            "meta": {
+              "title": "用户排名",
+              "icon": "user",
+              "roles": [
+                "admin"
+              ]
+            },
+            "component": "/user/rank"
+          }
+        ],
+        "name": "user",
+        "meta": {
+          "roles": [
+            "admin"
+          ],
+          "title": "用户",
+          "icon": "user"
+        },
+        "component": "Layout"
+      },
+      {
+        "path": "/machine",
+        "redirect": "/machine/machine_list",
+        "children": [
+          {
+            "path": "machine_list",
+            "name": "machine_list",
+            "meta": {
+              "title": "机器列表",
+              "icon": "message"
+            },
+            "component": "/machine/list"
+          },
+          {
+            "path": "food_summary",
+            "name": "food_summary",
+            "meta": {
+              "title": "机器统计",
+              "icon": "message"
+            },
+            "component": "/food/summary"
+          },
+          {
+            "path": "machine_rank",
+            "name": "machine_rank",
+            "meta": {
+              "title": "机器排名",
+              "icon": "message"
+            },
+            "component": "/machine/rank"
+          }
+        ],
+        "name": "machine",
+        "meta": {
+          "title": "机器记录",
+          "icon": "message"
+        },
+        "component": "Layout"
+      }
+    ]
+  },
+  "worker_config": {
+    "work_id": "config",
+    "max_pool_size": 3,
+    "user": "root",
+    "password": "123456",
+    "url": "jdbc:mysql://127.0.0.1:3306?serverTimezone=GMT%2B8&characterEncoding=utf8",
+    // 这连接不直接指向数据库，而是上一层
+    "db_name": "blog_pro",
+    "menu": [
+    ]
+  }
+}
